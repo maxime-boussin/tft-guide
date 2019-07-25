@@ -141,6 +141,7 @@ function sortChampions(sorting) {
             html += categorieUpper + "</h3><hr>";
             var i = 0;
             $.each(data, function (keyChamp, champ) {
+                console.log(new Date().getTime());
                 if (i === 0) {
                     html += "<div class='row'>";
                 }
@@ -159,6 +160,7 @@ function sortChampions(sorting) {
         });
     });
     req.done(function (response) {
+        console.log("TIIIIIIIME : "+new Date().getTime());
         $("#main").html(html);
         $('[data-toggle="tooltip"]').tooltip();
     });
