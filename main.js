@@ -115,6 +115,7 @@ function switchModalTab(index = 0) {
         $("#modalChampClasses").html(classes);
     });
 }
+
 function sortChampions(sorting) {
     var categories = [];
     var html = "";
