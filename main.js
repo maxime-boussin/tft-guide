@@ -55,7 +55,7 @@ function details(champion) {
         });
 
         req.done(function (response) {
-            html += "<tr class='rowProba'><td><i class='fas fa-question-circle' data-toggle='tooltip' data-html='true' data-placement='bottom' title='Probabilities to have <b>1 champion</b> on a reroll, sort by summoner&#39;s level.'></i></td></tr>";
+            html += "<tr class='rowProba'><td><i class='fas fa-question-circle' data-toggle='tooltip' data-html='true' data-placement='bottom' title='Probabilities to have <b>1 champion</b> on the bank, sort by summoner&#39;s level.'></i></td></tr>";
             html += "</table></div></div></div>";
             html += "<div class='col-md-4'  id='modalChampStats'><div class='col-md-6'>";
             html += "<p><i class='fas fa-heart prs-green' data-toggle='tooltip' title='Health'></i> " + desc.stats.defense.health + "</p>";
@@ -157,10 +157,10 @@ function sortChampions(sorting) {
                 i++;
             });
         });
-        req.done(function (response) {
-            $("#main").html(html);
-            $('[data-toggle="tooltip"]').tooltip();
-        });
+    });
+    req.done(function (response) {
+        $("#main").html(html);
+        $('[data-toggle="tooltip"]').tooltip();
     });
 }
 function firstUpper(text) {
