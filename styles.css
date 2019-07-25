@@ -1,0 +1,62 @@
+.champ-thumb{
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.prs-green{
+    color: #7aba72;
+}
+.prs-red{
+    color: #e36b46;
+}
+.prs-blue{
+    color: #6babc2;
+}
+.prs-yellow{
+    color: #e8db64;
+}
+.prs-purple{
+    color: #c544db;
+}
+h5{
+    display: inline;
+    font-size: 20px;
+}
+h3{
+    font-size: 22px;
+}
+h4{
+    font-size: 16px;
+}
+.centerText{
+    text-align: center;
+}
+.red-tooltip + .tooltip > .tooltip-inner {background-color: #d9534f;}
+.red-tooltip + .tooltip > .tooltip-arrow {border-top-color:#d9534f;}
+.navbar-brand img{
+    width: 25px;
+    margin-right: 10px;
+    display: inline-block;
+}
+.round-icon{
+    width: 30px;
+    background: #d9534f;
+    border-radius: 50%;
+    padding: 3px;
+    margin-right: 5px;
+}
+.skill-thumb{
+    border-radius:5px;
+    margin-top: 20px;
+    width: 64px;
+}
+#tableProba>tbody>tr>td, #tableProba>tbody>tr>th{
+    padding: 2px;
+    text-align: center;
+}
+#tableProba>tbody>tr>td{
+    font-size: 10px;
+}
+#probaTitle{
+    font-size: 20px;
+}
+.top-buffer { margin-top:10px; }
