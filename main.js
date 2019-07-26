@@ -2,6 +2,7 @@ $(document).ready(function () {
     loadHome();
 });
 function loadHome() {
+    sessionStorage.clear();
     $("#main").html("");
     $.getJSON("ressources/champions.json", function (data) {
         $.each(data, function (key, val) {
@@ -117,10 +118,25 @@ function switchModalTab(index = 0) {
 }
 
 function sortChampions(sorting) {
-    var categories = [];
-    var html = "";
-    var tooltipCateg = [];
-    var req1 = $.getJSON("ressources/" + sorting + ".json", function (data) {
+    if (!sessionStorage.getItem("champions") || !sessionStorage.getItem(sorting)) {
+        $.when($.getJSON("ressources/" + sorting + ".json", function (data) {
+            sessionStorage.setItem(sorting, JSON.stringify(data));
+        }), $.getJSON("ressources/champions.json", function (data) {
+            sessionStorage.setItem("champions", JSON.stringify(data));
+        })).done(function () {
+            treatment(sorting);
+        });
+    }
+    else{
+        treatment(sorting);
+    }
+    function treatment(sorting) {
+        var categories = [];
+        var html = "";
+        var tooltipCateg = [];
+        console.log(3);
+        data = JSON.parse(sessionStorage.getItem(sorting));
+        console.log(data);
         $.each(data, function (key, categJson) {
             categories.push(key);
             if (typeof (categJson.description) === "string") {
@@ -133,41 +149,38 @@ function sortChampions(sorting) {
             });
             tooltipCateg[key] = currentTooltipCateg;
         });
-    });
-    req1.done(function (response) {
-        var req2 = $.getJSON("ressources/champions.json", function (data) {
-            for (var j in categories) {
-                categorie = categories[j];
-                categorieUpper = firstUpper(categorie);
-                html += "<h3><img class='round-icon' src='https://cdn.lolchess.gg/images/tft/traiticons-white/trait_icon_" + categorie + ".png' data-html='true' data-placement='right' data-toggle='tooltip' title='" + tooltipCateg[categorie] + "'>";
-                html += categorieUpper + "</h3><hr>";
-                var i = 0;
-                for (var k in data) {
-                    champ = data[k];
-                    keyChamp = champ.key;
-                    if (i === 0) {
-                        html += "<div class='row'>";
-                    }
-                    if (champ.class.includes(categorieUpper) || champ.origin.includes(categorieUpper)) {
-                        html += "\
+        data = JSON.parse(sessionStorage.getItem("champions"));
+        console.log(data);
+        for (var j in categories) {
+            categorie = categories[j];
+            categorieUpper = firstUpper(categorie);
+            html += "<h3><img class='round-icon' src='https://cdn.lolchess.gg/images/tft/traiticons-white/trait_icon_" + categorie + ".png' data-html='true' data-placement='right' data-toggle='tooltip' title='" + tooltipCateg[categorie] + "'>";
+            html += categorieUpper + "</h3><hr>";
+            var i = 0;
+            for (var k in data) {
+                champ = data[k];
+                keyChamp = champ.key;
+                if (i === 0) {
+                    html += "<div class='row'>";
+                }
+                if (champ.class.includes(categorieUpper) || champ.origin.includes(categorieUpper)) {
+                    html += "\
                     <div class='col-md-1'>\n\
                     <a href='#' onclick='details(\"" + keyChamp + "\")'>\n\
                     <img class='champ-thumb red-tooltip' src='https://opgg-static.akamaized.net/images/lol/champion/" + keyChamp + ".png?image=w_60&v=1' data-html='true' data-toggle='tooltip' title='" + keyChamp + "'>\
                     </a></div>";
-                    }
-                    if (Object.keys(data).length - 1 === i) {
-                        html += "</div>";
-                    }
-                    i++;
                 }
+                if (Object.keys(data).length - 1 === i) {
+                    html += "</div>";
+                }
+                i++;
             }
-        });
-        req2.done(function (response) {
-            $("#main").html(html);
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    });
+        }
+        $("#main").html(html);
+        $('[data-toggle="tooltip"]').tooltip();
+    }
 }
+
 function listItems() {
     $("#main").html("");
     $.getJSON("ressources/items.json", function (data) {
