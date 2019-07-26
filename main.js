@@ -121,7 +121,9 @@ function sortChampions(sorting) {
     var html = "";
     var tooltipCateg = [];
     $.getJSON("ressources/" + sorting + ".json", function (data) {
+        console.log(sorting + ".json");
         $.each(data, function (key, categJson) {
+            console.log("each");
             categories.push(key);
             if (typeof (categJson.description) === "string") {
                 currentTooltipCateg = categJson.description.replace(/'/g, '&#39;') + "<br>";
@@ -133,15 +135,22 @@ function sortChampions(sorting) {
             });
             tooltipCateg[key] = currentTooltipCateg;
         });
+        console.log("leave each");
     });
+    console.log("leave json 1");
     var req = $.getJSON("ressources/champions.json", function (data) {
-        $.each(categories, function (keyCat, categorie) {
+        console.log("champions.json");
+        for (var j in categories) {
+            console.log("for1");
+            categorie = categories[j];
             categorieUpper = firstUpper(categorie);
             html += "<h3><img class='round-icon' src='https://cdn.lolchess.gg/images/tft/traiticons-white/trait_icon_" + categorie + ".png' data-html='true' data-placement='right' data-toggle='tooltip' title='" + tooltipCateg[categorie] + "'>";
             html += categorieUpper + "</h3><hr>";
             var i = 0;
-            $.each(data, function (keyChamp, champ) {
-                console.log(new Date().getTime());
+            for (var k in data) {
+                console.log("for2");
+                champ = data[k];
+                keyChamp = champ.key;
                 if (i === 0) {
                     html += "<div class='row'>";
                 }
@@ -156,12 +165,29 @@ function sortChampions(sorting) {
                     html += "</div>";
                 }
                 i++;
-            });
-        });
+            }
+            console.log("leave for2");
+        }
+        console.log("leave for1");
     });
+    console.log("leave champions.json");
     req.done(function (response) {
-        console.log("TIIIIIIIME : "+new Date().getTime());
+        console.log("req.done");
         $("#main").html(html);
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+}
+function listItems() {
+    $("#main").html("");
+    $.getJSON("ressources/items.json", function (data) {
+        $.each(data, function (key, val) {
+            $("#main").append("\
+            <div class='col-md-1'>\n\
+            <a href='#' onclick='details(\"" + key + "\")'>\n\
+            <img class='champ-thumb red-tooltip' src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + key + ".png' data-toggle='tooltip' title='" + val.name + "'>\
+            </a></div>");
+        });
+        $("#main").append("</div>");
         $('[data-toggle="tooltip"]').tooltip();
     });
 }
