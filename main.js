@@ -2,7 +2,6 @@ $(document).ready(function () {
     loadHome();
 });
 function loadHome() {
-    sessionStorage.clear();
     $("#main").html("");
     $.getJSON("ressources/champions.json", function (data) {
         $.each(data, function (key, val) {
