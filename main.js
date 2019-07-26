@@ -120,7 +120,7 @@ function sortChampions(sorting) {
     var categories = [];
     var html = "";
     var tooltipCateg = [];
-    $.getJSON("ressources/" + sorting + ".json", function (data) {
+    var req1 = $.getJSON("ressources/" + sorting + ".json", function (data) {
         console.log(sorting + ".json");
         $.each(data, function (key, categJson) {
             console.log("each");
@@ -138,43 +138,45 @@ function sortChampions(sorting) {
         console.log("leave each");
     });
     console.log("leave json 1");
-    var req = $.getJSON("ressources/champions.json", function (data) {
-        console.log("champions.json");
-        for (var j in categories) {
-            console.log("for1");
-            categorie = categories[j];
-            categorieUpper = firstUpper(categorie);
-            html += "<h3><img class='round-icon' src='https://cdn.lolchess.gg/images/tft/traiticons-white/trait_icon_" + categorie + ".png' data-html='true' data-placement='right' data-toggle='tooltip' title='" + tooltipCateg[categorie] + "'>";
-            html += categorieUpper + "</h3><hr>";
-            var i = 0;
-            for (var k in data) {
-                console.log("for2");
-                champ = data[k];
-                keyChamp = champ.key;
-                if (i === 0) {
-                    html += "<div class='row'>";
-                }
-                if (champ.class.includes(categorieUpper) || champ.origin.includes(categorieUpper)) {
-                    html += "\
+    req1.done(function (response) {
+        var req2 = $.getJSON("ressources/champions.json", function (data) {
+            console.log("champions.json");
+            for (var j in categories) {
+                console.log("for1");
+                categorie = categories[j];
+                categorieUpper = firstUpper(categorie);
+                html += "<h3><img class='round-icon' src='https://cdn.lolchess.gg/images/tft/traiticons-white/trait_icon_" + categorie + ".png' data-html='true' data-placement='right' data-toggle='tooltip' title='" + tooltipCateg[categorie] + "'>";
+                html += categorieUpper + "</h3><hr>";
+                var i = 0;
+                for (var k in data) {
+                    console.log("for2");
+                    champ = data[k];
+                    keyChamp = champ.key;
+                    if (i === 0) {
+                        html += "<div class='row'>";
+                    }
+                    if (champ.class.includes(categorieUpper) || champ.origin.includes(categorieUpper)) {
+                        html += "\
                     <div class='col-md-1'>\n\
                     <a href='#' onclick='details(\"" + keyChamp + "\")'>\n\
                     <img class='champ-thumb red-tooltip' src='https://opgg-static.akamaized.net/images/lol/champion/" + keyChamp + ".png?image=w_60&v=1' data-html='true' data-toggle='tooltip' title='" + keyChamp + "'>\
                     </a></div>";
+                    }
+                    if (Object.keys(data).length - 1 === i) {
+                        html += "</div>";
+                    }
+                    i++;
                 }
-                if (Object.keys(data).length - 1 === i) {
-                    html += "</div>";
-                }
-                i++;
+                console.log("leave for2");
             }
-            console.log("leave for2");
-        }
-        console.log("leave for1");
-    });
-    console.log("leave champions.json");
-    req.done(function (response) {
-        console.log("req.done");
-        $("#main").html(html);
-        $('[data-toggle="tooltip"]').tooltip();
+            console.log("leave for1");
+        });
+        console.log("leave champions.json");
+        req2.done(function (response) {
+            console.log("req.done");
+            $("#main").html(html);
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     });
 }
 function listItems() {
