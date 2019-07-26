@@ -184,10 +184,17 @@ function listItems() {
     $("#main").html("");
     $.getJSON("ressources/items.json", function (data) {
         $.each(data, function (key, val) {
+            
+            var tooltipContent ="<b>"+val.name.replace(/'/g, '&#39;')+"</b>";
+            console.log(typeof (val.buildsFrom));
+            if(typeof (val.buildsFrom) === "object"){
+            tooltipContent += "<p><img src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + val.buildsFrom[0] + ".png'>\n\
+            +<img src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + val.buildsFrom[1] + ".png'></p>";
+            }
             $("#main").append("\
             <div class='col-md-1'>\n\
             <a href='#' onclick='details(\"" + key + "\")'>\n\
-            <img class='champ-thumb red-tooltip' src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + key + ".png' data-toggle='tooltip' title='" + val.name + "'>\
+            <img class='champ-thumb red-tooltip' src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + key + ".png'data-html='true' data-placement='bottom' data-toggle='tooltip' title='" + tooltipContent.replace(/'/g, '&#39;') + "'>\
             </a></div>");
         });
         $("#main").append("</div>");
