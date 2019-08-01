@@ -3,17 +3,28 @@ $(document).ready(function () {
 });
 function loadHome() {
     $("#main").html("");
-    $.getJSON("ressources/champions.json", function (data) {
-        $.each(data, function (key, val) {
-            $("#main").append("\
-            <div class='col-md-1'>\n\
-            <a href='#' onclick='details(\"" + key + "\")'>\n\
-            <img class='champ-thumb red-tooltip' src='https://opgg-static.akamaized.net/images/lol/champion/" + key + ".png?image=w_60&v=1' data-toggle='tooltip' title='" + key + "'>\
-            </a></div>");
+    if (!sessionStorage.getItem("champions")) {
+        $.getJSON("ressources/champions.json", function (data) {
+            sessionStorage.setItem("champions", JSON.stringify(data));
+        }).done(function(response){
+            homeConstruct();
         });
-        $("#main").append("</div>");
-        $('[data-toggle="tooltip"]').tooltip();
+    }
+    else{
+        homeConstruct();
+    }
+}
+function homeConstruct(){
+    data = JSON.parse(sessionStorage.getItem("champions"));
+    $.each(data, function (key, val) {
+        $("#main").append("\
+        <div class='col-md-1'>\n\
+        <a href='#' onclick='details(\"" + key + "\")'>\n\
+        <img class='champ-thumb red-tooltip' src='https://opgg-static.akamaized.net/images/lol/champion/" + key + ".png?image=w_60&v=1' data-toggle='tooltip' title='" + key + "'>\
+        </a></div>");
     });
+    $("#main").append("</div>");
+    $('[data-toggle="tooltip"]').tooltip();
 }
 function details(champion) {
     $.getJSON("ressources/champions.json", function (data) {
@@ -132,8 +143,8 @@ function sortChampions(sorting) {
     function treatment(sorting) {
         var categories = [];
         var html = "";
-        var tooltipCateg = [];=
-        data = JSON.parse(sessionStorage.getItem(sorting));=
+        var tooltipCateg = [];
+        data = JSON.parse(sessionStorage.getItem(sorting));
         $.each(data, function (key, categJson) {
             categories.push(key);
             if (typeof (categJson.description) === "string") {
@@ -146,7 +157,7 @@ function sortChampions(sorting) {
             });
             tooltipCateg[key] = currentTooltipCateg;
         });
-        data = JSON.parse(sessionStorage.getItem("champions"));=
+        data = JSON.parse(sessionStorage.getItem("champions"));
         for (var j in categories) {
             categorie = categories[j];
             categorieUpper = firstUpper(categorie);
