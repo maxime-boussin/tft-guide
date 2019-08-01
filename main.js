@@ -132,10 +132,8 @@ function sortChampions(sorting) {
     function treatment(sorting) {
         var categories = [];
         var html = "";
-        var tooltipCateg = [];
-        console.log(3);
-        data = JSON.parse(sessionStorage.getItem(sorting));
-        console.log(data);
+        var tooltipCateg = [];=
+        data = JSON.parse(sessionStorage.getItem(sorting));=
         $.each(data, function (key, categJson) {
             categories.push(key);
             if (typeof (categJson.description) === "string") {
@@ -148,8 +146,7 @@ function sortChampions(sorting) {
             });
             tooltipCateg[key] = currentTooltipCateg;
         });
-        data = JSON.parse(sessionStorage.getItem("champions"));
-        console.log(data);
+        data = JSON.parse(sessionStorage.getItem("champions"));=
         for (var j in categories) {
             categorie = categories[j];
             categorieUpper = firstUpper(categorie);
@@ -186,7 +183,6 @@ function listItems() {
         $.each(data, function (key, val) {
             
             var tooltipContent ="<b>"+val.name.replace(/'/g, '&#39;')+"</b>";
-            console.log(typeof (val.buildsFrom));
             if(typeof (val.buildsFrom) === "object"){
             tooltipContent += "<p><img src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + val.buildsFrom[0] + ".png'>\n\
             +<img src='https://solomid-resources.s3.amazonaws.com/blitz/tft/items/" + val.buildsFrom[1] + ".png'></p>";
